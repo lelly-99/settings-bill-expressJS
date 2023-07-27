@@ -86,7 +86,25 @@ export default function settingsBill(){
         }
     }
     //return all functions
+    function setSettings(settings) {
+        setCallCost(settings.callCost);
+        setSmsCost(settings.smsCost);
+        setWarningLevel(settings.warningLevel);
+        setCriticalLevel(settings.criticalLevel);
+      }
+      
+      function getSettings() {
+        return {
+          callCost: getCallCost(),
+          smsCost: getSmsCost(),
+          warningLevel: getWarningLevel(),
+          criticalLevel: getCriticalLevel(),
+        };
+      }
+      
     return {
+        setSettings,
+        getSettings,
         setCallCost,
         getCallCost,
         setSmsCost,
