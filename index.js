@@ -19,7 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", function (req, res) {
-  res.render("index", { settings: settingsBillFunction.getSettings() });
+  res.render("index", { 
+    renderSettings: settingsBillFunction.getSettings(), 
+    totals : settingsBillFunction.totals()
+  });
 });
 
 app.post("/settings", function (req, res) {
@@ -32,13 +35,19 @@ app.post("/settings", function (req, res) {
   res.redirect("/");
 });
 
-app.post("/action", function (req, res) {});
+app.post("/action", function (req, res) {
+  // capture call type to add
+  const billItemType = req.body.billItemTypeWithSettings;
+  settingsBillFunction.callAction(billItemType); // Call the handleAction function
+  res.redirect("/");
+});
 
 app.get("/actions", function (req, res) {});
 
 app.get("/actions/:type", function (req, res) {});
 
 const PORT = process.env.PORT || 3011;
+
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
 });

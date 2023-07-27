@@ -101,8 +101,30 @@ export default function settingsBill(){
           criticalLevel: getCriticalLevel(),
         };
       }
+
+      function totals() {
+        const totalCalls = getTotalCallCost();
+        const totalSmses = getTotalSmsCost();
+        const overallTotal = getTotalCost();
+    
+        return {
+          totalCalls,
+          totalSmses,
+          overallTotal,
+        };
+      }
+
+      function callAction(billItemType) {
+        if (billItemType === "call") {
+            useCall();
+        } else if (billItemType === "sms") {
+            useSms();
+        }
+    }
       
     return {
+        callAction,
+        totals,
         setSettings,
         getSettings,
         setCallCost,
