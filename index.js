@@ -69,7 +69,7 @@ app.get("/actions/:type", function (req, res) {
   const actions = settingsBillFunction.actionsFor(type);
   res.render("actions", { actions });
 });
-
+  
 const PORT = process.env.PORT || 3007;
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
