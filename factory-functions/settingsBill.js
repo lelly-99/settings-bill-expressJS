@@ -1,147 +1,156 @@
-export default function settingsBill(){
-    //string input
-    var callInput = 0;
-    var smsInput = 0;
-    var warningInput = 0;
-    var criticalInput = 0;
-    var totalCallCost = 0;
-    var totalSmsCost = 0;
+export default function settingsBill() {
+  var callInput = 0;
+  var smsInput = 0;
+  var warningInput = 0;
+  var criticalInput = 0;
+  var totalCallCost = 0;
+  var totalSmsCost = 0;
+  var actionList = [];
+  var cost = 0;
 
-    // get call cost from the textarea in the DOM
-    function setCallCost(callCost){
-        callInput = callCost;
-    }
-    
-    function getCallCost(){
-        return callInput;
-    }
+  function setCallCost(callCost) {
+    callInput = callCost;
+  }
 
-    // get sms cost from input section in the DOM
-    function setSmsCost(smsCost){
-        smsInput = smsCost;
-    }
-    
-    function getSmsCost(){
-        return smsInput
-    }
+  function getCallCost() {
+    return callInput;
+  }
 
-    //get warning level from input section
-    function setWarningLevel(warningLevel){
-        warningInput = warningLevel;
-    }
+  function setSmsCost(smsCost) {
+    smsInput = smsCost;
+  }
 
-    function getWarningLevel(){
-        return warningInput
-    }
+  function getSmsCost() {
+    return smsInput;
+  }
 
-    //get critical level from input section
-    function setCriticalLevel(criticalLevel){
-        criticalInput = criticalLevel;
-    }
+  function setWarningLevel(warningLevel) {
+    warningInput = warningLevel;
+  }
 
-    function getCriticalLevel(){
-        return criticalInput
-    }
-    
-    //use call values
-    function useCall(){
-        if(!critcalLevelIsReached()){
-            totalCallCost += callInput;
-        }
-    }
-    //use sms values
-    function useSms(){
-        if(!critcalLevelIsReached()){
-            totalSmsCost += smsInput;
-        }
-    }
-    //get total calls cost
-    function getTotalCallCost(){
-        return totalCallCost
-    }
+  function getWarningLevel() {
+    return warningInput;
+  }
 
-    //get total sms  cost
-    function getTotalSmsCost(){
-        return totalSmsCost
-    }
-    //get total for calls and smses
-    function getTotalCost(){
-        return totalCallCost + totalSmsCost;
-    }
+  function setCriticalLevel(criticalLevel) {
+    criticalInput = criticalLevel;
+  }
 
-    //critcal level reached
-    function critcalLevelIsReached(){
-        return getTotalCost() >= getCriticalLevel()
+  function getCriticalLevel() {
+    return criticalInput;
+  }
+  //use call values
+  function useCall() {
+    if (!critcalLevelIsReached()) {
+      totalCallCost += callInput;
     }
-    //get warning 
-    function addWarningClass(){
-        if(getTotalCost() >= getWarningLevel()){
-            return "warning"
-        }
+  }
+  //use sms values
+  function useSms() {
+    if (!critcalLevelIsReached()) {
+      totalSmsCost += smsInput;
     }
-    //get critical 
-    function addDangerClass(){
-        if(critcalLevelIsReached()){
-            return "danger"
-        }
-    }
-    //return all functions
-    function setSettings(settings) {
-        setCallCost(settings.callCost);
-        setSmsCost(settings.smsCost);
-        setWarningLevel(settings.warningLevel);
-        setCriticalLevel(settings.criticalLevel);
-      }
-      
-      function getSettings() {
-        return {
-          callCost: getCallCost(),
-          smsCost: getSmsCost(),
-          warningLevel: getWarningLevel(),
-          criticalLevel: getCriticalLevel(),
-        };
-      }
+  }
 
-      function totals() {
-        const totalCalls = getTotalCallCost();
-        const totalSmses = getTotalSmsCost();
-        const overallTotal = getTotalCost();
-    
-        return {
-          totalCalls,
-          totalSmses,
-          overallTotal,
-        };
-      }
+  function getTotalCallCost() {
+    return totalCallCost;
+  }
 
-      function callAction(billItemType) {
-        if (billItemType === "call") {
-            useCall();
-        } else if (billItemType === "sms") {
-            useSms();
-        }
+  function getTotalSmsCost() {
+    return totalSmsCost;
+  }
+
+  function getTotalCost() {
+    return totalCallCost + totalSmsCost;
+  }
+
+  function critcalLevelIsReached() {
+    return getTotalCost() >= getCriticalLevel();
+  }
+
+  function addWarningClass() {
+    if (getTotalCost() >= getWarningLevel()) {
+      return "warning";
     }
-      
+  }
+  function addDangerClass() {
+    if (critcalLevelIsReached()) {
+      return "danger";
+    }
+  }
+
+  function setSettings(settings) {
+    setCallCost(settings.callCost);
+    setSmsCost(settings.smsCost);
+    setWarningLevel(settings.warningLevel);
+    setCriticalLevel(settings.criticalLevel);
+  }
+
+  function getSettings() {
     return {
-        callAction,
-        totals,
-        setSettings,
-        getSettings,
-        setCallCost,
-        getCallCost,
-        setSmsCost,
-        getSmsCost,
-        setWarningLevel,
-        getWarningLevel,
-        setCriticalLevel,
-        getCriticalLevel,
-        useCall,
-        useSms,
-        getTotalCallCost,
-        getTotalSmsCost,
-        getTotalCost,
-        addWarningClass,
-        addDangerClass,
-        critcalLevelIsReached,
+      callCost: getCallCost(),
+      smsCost: getSmsCost(),
+      warningLevel: getWarningLevel(),
+      criticalLevel: getCriticalLevel(),
+    };
+  }
+
+  function totals() {
+    const totalCalls = getTotalCallCost();
+    const totalSmses = getTotalSmsCost();
+    const overallTotal = getTotalCost();
+
+    return {
+      totalCalls,
+      totalSmses,
+      overallTotal,
+    };
+  }
+  //displayed in a table in actions
+  function callAction(action, callInput, smsInput) {
+    if (action === "call") {
+      cost = useCall();
+    } else if (action === "sms") {
+      cost = useSms();
     }
+
+    actionList.push({
+      type: action, 
+      cost: action === "call" ? callInput : smsInput,
+      timestamp: new Date(),
+    });
+  }  
+  function actions() {
+    return actionList;
+  }
+
+  // Return only the actions for a specific type
+  function actionsFor(type) {
+    return actionList.filter((action) => action.type === type);
+  }
+
+  return {
+    actions,
+    actionsFor,
+    callAction,
+    totals,
+    setSettings,
+    getSettings,
+    setCallCost,
+    getCallCost,
+    setSmsCost,
+    getSmsCost,
+    setWarningLevel,
+    getWarningLevel,
+    setCriticalLevel,
+    getCriticalLevel,
+    useCall,
+    useSms,
+    getTotalCallCost,
+    getTotalSmsCost,
+    getTotalCost,
+    addWarningClass,
+    addDangerClass,
+    critcalLevelIsReached,
+  };
 }
