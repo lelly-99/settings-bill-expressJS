@@ -69,7 +69,7 @@ export default function settingsBill() {
   }
 
   function addWarningClass() {
-    if (getTotalCost() >= getWarningLevel() && !critcalLevelIsReached()) {
+    if (getTotalCost() >= getWarningLevel()) {
       return "warning";
     }
   }
@@ -78,7 +78,6 @@ export default function settingsBill() {
       return "danger";
     }
   }
-
   function setSettings(settings) {
     setCallCost(settings.callCost);
     setSmsCost(settings.smsCost);
