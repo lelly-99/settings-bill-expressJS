@@ -78,7 +78,6 @@ export default function settingsBill() {
       return "danger";
     }
   }
-
   function setSettings(settings) {
     setCallCost(settings.callCost);
     setSmsCost(settings.smsCost);
