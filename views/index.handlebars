@@ -70,17 +70,8 @@
               <tr>
                 <td><a href="/actions">Total</a></td>
                 <td>R
-                    {{#if warningLevelReached}}
-                      <span
-                        class="totalSettings warning"
-                      >{{totals.overallTotal}}</span>
-                    {{else if criticalLevelReached}}
-                      <span
-                        class="totalSettings danger"
-                      >{{totals.overallTotal}}</span>
-                        {{else}}
-                      <span
-                        class="totalSettings"
+                 <span
+                        class="totalSettings {{#if warningLevelReached}}warning {{else}}{{#if criticalLevelReached}}danger {{/if}}{{/if}}"
                       >{{totals.overallTotal}}</span>
                     {{/if}}
                 </td>
