@@ -1,23 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Settings Bill App</title>
-</head>
-<body>
+
   <div class="row">
     <div class="twelve columns box">
       <h3>Bill with settings</h3>
       <div>
-        Select the call or SMS radio button. Update the appropriate total and
-        the overall total when the ADD button is pressed.
+        Select the call or sms radio button. Update the appropriate total and the overall total when the ADD button is pressed.
         <i>Calls costs should now be configurable using the settings section.</i>
       </div>
       <div>
         <i>
-          If the total cost exceeds the warning level, show the total cost in
-          orange. If it exceeds the critical level, show it in red and prevent
-          any new costs from being added. The warning and critical level
-          should both be configurable now.
+          If the total cost exceeds the warning level, show the total cost in orange. If it exceeds the critical level, show it in red and prevent any new costs from being added. The warning and critical level should both be configurable now.
         </i>
       </div>
 
@@ -45,7 +36,13 @@
               />
               <span class="label-body">SMS</span>
             </label>
-            <button class="button-primary" type="submit" name="button">Add</button>
+            <button
+              class="button-primary {{addDangerClass}} {{addWarningClass}}"
+              type="submit"
+              name="button"
+            >
+              Add
+            </button>
           </form>
 
           <h5>Totals</h5>
@@ -61,10 +58,15 @@
             <tr>
               <td><a href="/actions">Total</a></td>
               <td>
-                R
-                <span class="totalSettings {{#if warningLevelReached}}warning {{else}}{{#if criticalLevelReached}}danger{{/if}}{{/if}}">
-                  {{totals.overallTotal}}
-                </span>
+                {{#if warningLevelReached}}
+                  <span class="totalSettings warning">R{{totals.overallTotal}}</span>
+                {{else}}
+                  {{#if criticalLevelReached}}
+                    <span class="totalSettings danger">R{{totals.overallTotal}}</span>
+                  {{else}}
+                    <span class="totalSettings">R{{totals.overallTotal}}</span>
+                  {{/if}}
+                {{/if}}
               </td>
             </tr>
           </table>
@@ -106,7 +108,12 @@
               placeholder="eg. 65.00"
               value="{{renderSettings.criticalLevel}}"
             />
-            <button class="button-primary updateSettings" type="submit" step="0.1" name="button">
+            <button
+              class="button-primary updateSettings"
+              type="submit"
+              step="0.1"
+              name="button"
+            >
               Update settings
             </button>
           </form>
@@ -114,6 +121,6 @@
       </div>
     </div>
   </div>
-</body>
-</html>
+
+
 
