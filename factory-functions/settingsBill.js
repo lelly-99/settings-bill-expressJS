@@ -69,7 +69,7 @@ export default function settingsBill() {
   }
 
   function addWarningClass() {
-    if (getTotalCost() >= getWarningLevel()) {
+    if (getTotalCost() >= getWarningLevel() && !critcalLevelIsReached()) {
       return "warning";
     }
   }
