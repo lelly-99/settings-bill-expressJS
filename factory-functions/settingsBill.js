@@ -1,4 +1,3 @@
-import moment from 'moment'
 export default function settingsBill() {
   var callInput = 0;
   var smsInput = 0;
@@ -107,19 +106,25 @@ export default function settingsBill() {
       overallTotal,
     };
   }
-  //displayed in a table in actions
+  // displayed in a table in actions
   function callAction(action, callInput, smsInput) {
     if (action === "call") {
-      cost = useCall();
+      useCall();
+      cost = callInput;
     } else if (action === "sms") {
-      cost = useSms();
+      useSms();
+      cost = smsInput;
     }
-    actionList.push({
-      type: action, 
-      cost: action === "call" ? callInput : smsInput,
-      timestamp: moment().fromNow()
-    });
-  }  
+ 
+    if (cost > 0) {
+      actionList.push({
+        type: action,
+        cost: cost.toFixed(2),
+        timestamp: new Date(),
+      });
+    }
+  }
+  
   function actions() {
     return actionList
   }

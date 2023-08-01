@@ -2,6 +2,9 @@ import express from "express";
 import { engine } from "express-handlebars";
 import bodyParser from "body-parser";
 import settingsBill from "./factory-functions/settingsBill.js";
+import moment from 'moment'
+moment().format();
+
 
 //instance for Express app
 const app = express();
@@ -73,16 +76,25 @@ app.post("/action", function (req, res) {
 
 app.get("/actions", function (req, res) {
   const actions = settingsBillFunction.actions();
-  res.render("actions", { actions });
+  const time = actions.forEach((list) => {
+    list.timestamp = moment().startOf('hour').fromNow()
+  })
+  res.render("actions", { actions, time });
 });
 
 app.get("/actions/:type", function (req, res) {
   const type = req.params.type;
-  const actions = settingsBillFunction.actionsFor(type);
-  res.render("actions", { actions });
+  const actionList = settingsBillFunction.actionsFor(type);
+  const time = actionList.forEach((list) => {
+    list.timestamp = moment().startOf('hour').fromNow()
+  })
+  res.render("actions", { 
+    actions : settingsBillFunction.actionsFor(type),
+    time
+   });
 });
   
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3007;
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
 });
