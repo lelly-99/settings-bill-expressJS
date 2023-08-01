@@ -25,18 +25,30 @@ app.use(bodyParser.json())
 
 // homepage route
 app.get("/", function (req, res) {
-  // critical level 
+  // critical level
   const criticalLevelReached = settingsBillFunction.critcalLevelIsReached();
-  //warning level
+  // warning level
   const warningLevelReached = settingsBillFunction.getTotalCost() >= settingsBillFunction.getWarningLevel();
-  // display data/ user inputs on screen as per action taken
+  // Get the settings data to check if the settings have been submitted
+  const getSettings = settingsBillFunction.getSettings();
+
+  // Check if the settings have been submitted
+  const settingsSubmitted = (
+    getSettings.callCost !== 0 &&
+    getSettings.smsCost !== 0 &&
+    getSettings.warningLevel !== 0 &&
+    getSettings.criticalLevel !== 0
+  );
+
   res.render("index", {
-    renderSettings: settingsBillFunction.getSettings(),
+    renderSettings: getSettings,
     totals: settingsBillFunction.totals(),
     criticalLevelReached,
     warningLevelReached,
+    settingsSubmitted, // Pass the settingsSubmitted variable to the template
   });
 });
+
 
 //route for updating settings
 app.post("/settings", function (req, res) {
@@ -70,7 +82,7 @@ app.get("/actions/:type", function (req, res) {
   res.render("actions", { actions });
 });
   
-const PORT = process.env.PORT || 3008;
+const PORT = process.env.PORT || 3005;
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
 });

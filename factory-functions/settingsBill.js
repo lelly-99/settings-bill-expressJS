@@ -1,3 +1,4 @@
+import moment from 'moment'
 export default function settingsBill() {
   var callInput = 0;
   var smsInput = 0;
@@ -53,11 +54,11 @@ export default function settingsBill() {
   }
 
   function getTotalCallCost() {
-    return totalCallCost;
+    return totalCallCost.toFixed(2);
   }
 
   function getTotalSmsCost() {
-    return totalSmsCost;
+    return totalSmsCost.toFixed(2);
   }
 
   function getTotalCost() {
@@ -78,6 +79,7 @@ export default function settingsBill() {
       return "danger";
     }
   }
+  
   function setSettings(settings) {
     setCallCost(settings.callCost);
     setSmsCost(settings.smsCost);
@@ -97,7 +99,7 @@ export default function settingsBill() {
   function totals() {
     const totalCalls = getTotalCallCost();
     const totalSmses = getTotalSmsCost();
-    const overallTotal = getTotalCost();
+    const overallTotal = getTotalCost().toFixed(2);
 
     return {
       totalCalls,
@@ -112,15 +114,14 @@ export default function settingsBill() {
     } else if (action === "sms") {
       cost = useSms();
     }
-
     actionList.push({
       type: action, 
       cost: action === "call" ? callInput : smsInput,
-      timestamp: new Date(),
+      timestamp: moment().fromNow()
     });
   }  
   function actions() {
-    return actionList;
+    return actionList
   }
 
   // Return only the actions for a specific type
