@@ -1,138 +1,160 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <title>Bill with Settings</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      function updateTimestamps() {
-        const timestamps = document.querySelectorAll('.timestamp');
-        timestamps.forEach((element) => {
-          const isoTimestamp = element.getAttribute('data-timestamp');
-          const formattedTimestamp = moment(isoTimestamp).fromNow();
-          element.innerHTML = formattedTimestamp;
-        });
-      }
-
-      // Update timestamps immediately and then every 60 seconds
-      updateTimestamps();
-      setInterval(updateTimestamps, 60000);
-    });
-  </script>
-</head>
-<body>
-<div class="row">
-  <div class="twelve columns box">
-    <h3>Bill with settings</h3>
-    <div>
-      Select the call or sms radio button. Update the appropriate total and the overall total when the ADD button is pressed.
-      <i>Calls costs should now be configurable using the settings section.</i>
-    </div>
-    <div>
-      <i>
-        If the total cost exceeds the warning level, show the total cost in orange. If it exceeds the critical level, show it in red and prevent any new costs from being added. The warning and critical level should both be configurable now.
-      </i>
-    </div>
-    <hr />
+  <head>
+    <title>Bill with Settings</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () { function
+      updateTimestamps() { const timestamps =
+      document.querySelectorAll('.timestamp'); timestamps.forEach((element) => {
+      const isoTimestamp = element.getAttribute('data-timestamp'); const
+      formattedTimestamp = moment(isoTimestamp).fromNow(); element.innerHTML =
+      formattedTimestamp; }); } // Update timestamps immediately and then every
+      60 seconds updateTimestamps(); setInterval(updateTimestamps, 60000); });
+    </script>
+  </head>
+  <body>
     <div class="row">
-      <div class="six columns">
-        <h5>Bill type</h5>
-        <form action="/action" method="POST">
-          <label>
-            <input
-              type="radio"
-              value="call"
-              name="billItemTypeWithSettings"
-              class="billItemTypeWithSettings"
-            />
-            <span class="label-body">Call</span>
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="sms"
-              name="billItemTypeWithSettings"
-              class="billItemTypeWithSettings"
-            />
-            <span class="label-body">SMS</span>
-          </label>
-          <button class="button-primary  addButton" type="submit" name="button">Add</button>
-        </form>
-        <h5>Totals</h5>
-        <table>
-          <tr>
-            <td><a href="/actions/call">Call total</a></td>
-            <td>R<span class="callTotalSettings">{{totals.totalCalls}}</span></td>
-          </tr>
-          <tr>
-            <td><a href="/actions/sms">SMS total</a></td>
-            <td>R<span class="smsTotalSettings">{{totals.totalSmses}}</span></td>
-          </tr>
-          <tr>
-            <td><a href="/actions">Total</a></td>
-            <td class="black">
-              {{#if settingsSubmitted}}
-                {{#if criticalLevelReached}}
-                  <span class="totalSettings danger">R{{totals.overallTotal}}</span>
-                {{else}}
-                  {{#if warningLevelReached}}
-                    <span class="totalSettings warning">R{{totals.overallTotal}}</span>
+      <div class="twelve columns box">
+        <h3>Bill with settings</h3>
+        <div>
+          Select the call or sms radio button. Update the appropriate total and
+          the overall total when the ADD button is pressed.
+          <i>Calls costs should now be configurable using the settings section.</i>
+        </div>
+        <div>
+          <i>
+            If the total cost exceeds the warning level, show the total cost in
+            orange. If it exceeds the critical level, show it in red and prevent
+            any new costs from being added. The warning and critical level
+            should both be configurable now.
+          </i>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="six columns">
+            <h5>Bill type</h5>
+            <form action="/action" method="POST">
+              <label>
+                <input
+                  type="radio"
+                  value="call"
+                  name="billItemTypeWithSettings"
+                  class="billItemTypeWithSettings"
+{{#equal selectedRadio "call"}}checked{{/equal}}
+                />
+                <span class="label-body">Call</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="sms"
+                  name="billItemTypeWithSettings"
+                  class="billItemTypeWithSettings"
+ {{#equal selectedRadio "sms"}}checked{{/equal}}
+                />
+                <span class="label-body">SMS</span>
+              </label>
+              <button
+                class="button-primary addButton"
+                type="submit"
+                name="button"
+              >Add</button>
+            </form>
+            <h5>Totals</h5>
+            <table>
+              <tr>
+                <td><a href="/actions/call">Call total</a></td>
+                <td>R<span
+                    class="callTotalSettings"
+                  >{{totals.totalCalls}}</span></td>
+              </tr>
+              <tr>
+                <td><a href="/actions/sms">SMS total</a></td>
+                <td>R<span
+                    class="smsTotalSettings"
+                  >{{totals.totalSmses}}</span></td>
+              </tr>
+              <tr>
+                <td><a href="/actions">Total</a></td>
+                <td class="black">
+                  {{#if settingsSubmitted}}
+                    {{#if criticalLevelReached}}
+                      <span
+                        class="totalSettings danger"
+                      >R{{totals.overallTotal}}</span>
+                    {{else}}
+                      {{#if warningLevelReached}}
+                        <span
+                          class="totalSettings warning"
+                        >R{{totals.overallTotal}}</span>
+                      {{else}}
+                        <span
+                          class="totalSettings"
+                        >R{{totals.overallTotal}}</span>
+                      {{/if}}
+                    {{/if}}
                   {{else}}
                     <span class="totalSettings">R{{totals.overallTotal}}</span>
                   {{/if}}
-                {{/if}}
-              {{else}}
-                <span class="totalSettings">R{{totals.overallTotal}}</span>
-              {{/if}}
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="six columns">
-        <h5>Settings</h5>
-        <form action="/settings" method="POST">
-          <label for="callCost">Call cost</label>
-          <input
-            class="u-full-width callCostSetting"
-            type="number"
-            step=".01"
-            name="callCost"
-            placeholder="eg. 2.55"
-            value="{{renderSettings.callCost}}"
-          />
-          <label for="smsCost">SMS cost</label>
-          <input
-            class="u-full-width smsCostSetting"
-            type="number"
-            step=".01"
-            name="smsCost"
-            placeholder="eg. 0.65"
-            value="{{renderSettings.smsCost}}"
-          />
-          <label for="warningLevel">Warning level</label>
-          <input
-            class="u-full-width warningLevelSetting"
-            type="number"
-            name="warningLevel"
-            placeholder="eg. 30.00"
-            value="{{renderSettings.warningLevel}}"
-          />
-          <label for="criticalLevel">Critical level</label>
-          <input
-            class="u-full-width criticalLevelSetting"
-            type="number"
-            name="criticalLevel"
-            placeholder="eg. 65.00"
-            value="{{renderSettings.criticalLevel}}"
-          />
-          <button class="button-primary updateSettings" type="submit" name="button">Update settings</button>
-        </form>
-        <form action="/reset" method="POST">
-          <button class="button-primary resetButton" type="submit" name="button">Reset settings and Totals</button>
-        </form>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="six columns">
+            <h5>Settings</h5>
+            <form action="/settings" method="POST">
+              <label for="callCost">Call cost</label>
+              <input
+                class="u-full-width callCostSetting"
+                type="number"
+                step=".01"
+                name="callCost"
+                placeholder="eg. 2.55"
+                value="{{renderSettings.callCost}}"
+              />
+              <label for="smsCost">SMS cost</label>
+              <input
+                class="u-full-width smsCostSetting"
+                type="number"
+                step=".01"
+                name="smsCost"
+                placeholder="eg. 0.65"
+                value="{{renderSettings.smsCost}}"
+              />
+              <label for="warningLevel">Warning level</label>
+              <input
+                class="u-full-width warningLevelSetting"
+                type="number"
+                name="warningLevel"
+                placeholder="eg. 30.00"
+                value="{{renderSettings.warningLevel}}"
+              />
+              <label for="criticalLevel">Critical level</label>
+              <input
+                class="u-full-width criticalLevelSetting"
+                type="number"
+                name="criticalLevel"
+                placeholder="eg. 65.00"
+                value="{{renderSettings.criticalLevel}}"
+              />
+              <button
+                class="button-primary updateSettings"
+                type="submit"
+                name="button"
+              >Update settings</button>
+            </form>
+            <form action="/reset" method="POST">
+              <button
+                class="button-primary resetButton"
+                type="submit"
+                name="button"
+              >Reset settings and Totals</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>

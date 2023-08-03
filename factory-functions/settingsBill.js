@@ -137,15 +137,15 @@ export default function settingsBill() {
   }
 
   function reset() {
-      //reset totals
-      totalCallCost = 0;
-      totalSmsCost = 0;
-      actionList = [];
-      //reset settings
-      setCallCost(0);
-      setSmsCost(0);
-      setWarningLevel(0);
-      setCriticalLevel(0);
+    //reset totals
+    totalCallCost = 0;
+    totalSmsCost = 0;
+    actionList = [];
+    //reset settings
+    setCallCost(0);
+    setSmsCost(0);
+    setWarningLevel(0);
+    setCriticalLevel(0);
   }
   return {
     reset,

@@ -1,17 +1,20 @@
 <div class="row">
-<h1>Actions</h1>
-<table>
+  <h1>Actions</h1>
+  <table>
     <tr>
-        <th>Type</th>
-        <th>Price</th>
-        <th>When</th>
+      <th>Type</th>
+      <th>Price</th>
+      <th>When</th>
     </tr>
     {{#each actions}}
-    <tr>
+      <tr>
         <td>{{type}}</td>
         <td>R{{cost}}</td>
-  <td class="timestamp" data-timestamp="{{isoTimestamp}}">{{formattedTimestamp}}</td>
-    </tr>
+        <td
+          class="timestamp"
+          data-timestamp="{{isoTimestamp}}"
+        >{{formattedTimestamp}}</td>
+      </tr>
     {{/each}}
-</table>
+  </table>
 </div>
