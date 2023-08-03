@@ -88,14 +88,15 @@ app.get("/actions", function (req, res) {
 
 app.get("/actions/:type", function (req, res) {
   const type = req.params.type;
-  const actionList = settingsBillFunction.actionsFor(type);
-  const time = actionList.forEach((list) => {
-    list.timestamp = moment().startOf("hour").fromNow();
+  const actions = settingsBillFunction.actionsFor(type).map((action) => {
+    return {
+      ...action,
+      isoTimestamp: action.timestamp.toISOString(),
+      formattedTimestamp: action.timestamp.fromNow(),
+    };
   });
-  res.render("actions", {
-    actions: settingsBillFunction.actionsFor(type),
-    time,
-  });
+
+  res.render("actions", { actions });
 });
 
 app.post("/reset", function (req, res) {
