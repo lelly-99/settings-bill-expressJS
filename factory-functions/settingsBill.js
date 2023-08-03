@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default function settingsBill() {
   var callInput = 0;
   var smsInput = 0;
@@ -78,7 +80,7 @@ export default function settingsBill() {
       return "danger";
     }
   }
-  
+
   function setSettings(settings) {
     setCallCost(settings.callCost);
     setSmsCost(settings.smsCost);
@@ -115,18 +117,18 @@ export default function settingsBill() {
       useSms();
       cost = smsInput;
     }
- 
+
     if (cost > 0) {
       actionList.push({
         type: action,
         cost: cost.toFixed(2),
-        timestamp: new Date(),
+        timestamp: moment(),
       });
     }
   }
-  
+
   function actions() {
-    return actionList
+    return actionList;
   }
 
   // Return only the actions for a specific type
@@ -134,7 +136,19 @@ export default function settingsBill() {
     return actionList.filter((action) => action.type === type);
   }
 
+  function reset() {
+      //reset totals
+      totalCallCost = 0;
+      totalSmsCost = 0;
+      actionList = [];
+      //reset settings
+      setCallCost(0);
+      setSmsCost(0);
+      setWarningLevel(0);
+      setCriticalLevel(0);
+  }
   return {
+    reset,
     actions,
     actionsFor,
     callAction,

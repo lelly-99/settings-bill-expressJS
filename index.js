@@ -48,7 +48,7 @@ app.get("/", function (req, res) {
     totals: settingsBillFunction.totals(),
     criticalLevelReached,
     warningLevelReached,
-    settingsSubmitted, // Pass the settingsSubmitted variable to the template
+    settingsSubmitted,// Pass the settingsSubmitted variable to the template
   });
 });
 
@@ -70,16 +70,20 @@ app.post("/settings", function (req, res) {
 app.post("/action", function (req, res) {
   const billItemType = req.body.billItemTypeWithSettings;
   settingsBillFunction.callAction(billItemType, settingsBillFunction.getCallCost(), settingsBillFunction.getSmsCost());
+  const selectedRadio = req.body.selectedRadio;
   res.redirect("/");
 });
 
-
 app.get("/actions", function (req, res) {
-  const actions = settingsBillFunction.actions();
-  const time = actions.forEach((list) => {
-    list.timestamp = moment().startOf('hour').fromNow()
-  })
-  res.render("actions", { actions, time });
+  const actions = settingsBillFunction.actions().map((action) => {
+    return {
+      ...action,
+      isoTimestamp: action.timestamp.toISOString(),
+      formattedTimestamp: action.timestamp.fromNow(),
+    };
+  });
+
+  res.render("actions", { actions });
 });
 
 app.get("/actions/:type", function (req, res) {
@@ -93,11 +97,23 @@ app.get("/actions/:type", function (req, res) {
     time
    });
 });
-  
+
+app.post("/reset", function (req, res) {
+  settingsBillFunction.reset();
+  res.render("index", {
+    renderSettings: settingsBillFunction.reset(),
+    totals: settingsBillFunction.reset(),
+  });
+});
+
 const PORT = process.env.PORT || 3007;
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
 });
+
+
+
+
 
 
 
